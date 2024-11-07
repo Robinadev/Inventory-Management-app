@@ -1,11 +1,8 @@
-// Import the functions you need from the SDKs you need
+// Import the functions you need from the SDKs
 import { initializeApp } from "firebase/app";
-import { getFirestore } from 'firebase/firestore';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyByv6xGqhV_q3AIv4n9ga-kQFDfIYBRscs",
   authDomain: "inventory-app-c5fec.firebaseapp.com",
@@ -19,4 +16,21 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
+
+// Export the initialized Firestore instance
 export { firestore };
+
+// Test function to verify Firestore connection
+async function testFirestore() {
+  try {
+    const testCollection = collection(firestore, 'testCollection');
+    const snapshot = await getDocs(testCollection);
+    snapshot.forEach((doc) => {
+      console.log(doc.id, '=>', doc.data());
+    });
+  } catch (error) {
+    console.error("Error connecting to Firestore:", error);
+  }
+}
+
+testFirestore();

@@ -52,13 +52,22 @@ export default function Home() {
   }, []);
 
   const addItem = async (item) => {
-    const docRef = doc(collection(firestore, 'inventory'), item);
-    const docSnap = await getDoc(docRef);
+    try {
+      const docRef = doc(collection(firestore, 'inventory'), item);
+      const docSnap = await getDoc(docRef);
+      // ...
+     
+  
+  
     if (docSnap.exists()) {
       const { quantity } = docSnap.data();
       await setDoc(docRef, { quantity: quantity + 1 });
     } else {
       await setDoc(docRef, { quantity: 1 });
+    }
+  }
+    catch (error) {
+      console.error('Error adding item:', error);
     }
     await updateInventory();
   };
